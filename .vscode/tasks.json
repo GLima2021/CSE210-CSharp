@@ -15,6 +15,23 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        
+            {
+                "label": "build",
+                "command": "dotnet",
+                "type": "process",
+                "args": [
+                    "build",
+                    "${workspaceFolder}/Jornal/daily.csproj",
+                    "consoleloggerparameters:NoSummary"
+                ],
+                "group": "build",
+                "presentation": {
+                    "reveal": "silent"
+                },
+                "problemMatcher": "$msCompile"
+
+        },
 
         {
             "label": "build-csharp-prep-Prep1",
