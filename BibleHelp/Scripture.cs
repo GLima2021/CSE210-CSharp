@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MemorizationApp
@@ -30,19 +30,25 @@ namespace MemorizationApp
             }
         }
 
-        public void HideRandomWord()
+        public void HideRandomWords(int count)
         {
-            int index = _random.Next(_words.Length);
-            while (!_wordVisible[index])
+            var visibleIndices = Enumerable.Range(0, _words.Length).Where(i => _wordVisible[i]).ToList();
+            if (count > visibleIndices.Count)
             {
-                index = _random.Next(_words.Length);
+                count = visibleIndices.Count;
             }
-            _wordVisible[index] = false;
+
+            for (int i = 0; i < count; i++)
+            {
+                int index = _random.Next(visibleIndices.Count);
+                _wordVisible[visibleIndices[index]] = false;
+                visibleIndices.RemoveAt(index);
+            }
         }
 
         public string GetVisibleScripture()
         {
-            StringBuilder visibleText = new StringBuilder();
+            var visibleText = new StringBuilder();
             for (int i = 0; i < _words.Length; i++)
             {
                 if (_wordVisible[i])
@@ -59,14 +65,7 @@ namespace MemorizationApp
 
         public bool AllWordsHidden()
         {
-            foreach (bool visible in _wordVisible)
-            {
-                if (visible)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return !_wordVisible.Any(visible => visible);
         }
     }
 }
